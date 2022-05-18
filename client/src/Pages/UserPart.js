@@ -370,8 +370,8 @@ const UserPart = (props) => {
           </div>
         </div>
         <div className="MapsContainer">
-          <div className="col-sm-9 col-md-2 col-lg-8">
-            <Maps />  
+          <div className="col-sm-9 col-md-2 col-lg-8" class>
+            <Maps pickuplocation={pickuplocation} dropofflocation={dropofflocation}/>  
             <div></div>
           </div>
         </div> 
