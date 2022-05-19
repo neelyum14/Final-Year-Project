@@ -25,7 +25,8 @@ const UserPart = (props) => {
   const [trucktype, setTrucktype] = useState("");
   const [submitted, setSubmitted] = useState("");
   const [error, setError] = useState("");
-
+  const [pickupcoord,setpickupcoord]=useState([72.8777, 19.0760]);
+  const [dropoffcoord,setdropoffcoord]=useState([]);
 
 
 
@@ -46,11 +47,29 @@ const UserPart = (props) => {
     setPickuplocation(e.target.value);
     setSubmitted(false);
   };
+  const HandlePickupCoord = (e)=>{
+    fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${e.target.value}.json?limit=1&access_token=pk.eyJ1IjoiZm9vZGllMjM2IiwiYSI6ImNreTgzMTFkOTE2eWgydnMxMHJ1ZzVqZ3MifQ.KHB9VYX_nKPKaN5RkSnoeQ`,{ method: 'GET' })
+    .then(resp=>resp.json())
+    .then(respdata=>{
+        respdata.features.map((place,index)=>{
+          setpickupcoord(place.center);
+        })
+    })
+  }
   // Handling the email change
   const handleDropoffLocation = (e) => {
     setDropofflocation(e.target.value);
     setSubmitted(false);
   };
+  const HandleDropoffCoord = (e)=>{
+    fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${e.target.value}.json?limit=1&access_token=pk.eyJ1IjoiZm9vZGllMjM2IiwiYSI6ImNreTgzMTFkOTE2eWgydnMxMHJ1ZzVqZ3MifQ.KHB9VYX_nKPKaN5RkSnoeQ`,{ method: 'GET' })
+    .then(resp=>resp.json())
+    .then(respdata=>{
+        respdata.features.map((place,index)=>{
+          setdropoffcoord(place.center);
+        })
+    })
+  }
   const handlePickupDate = (e) => {
     setPickupdate(e.target.value);
     setSubmitted(false);
@@ -255,6 +274,7 @@ const UserPart = (props) => {
                           placeholder="City, Airport, Station, etc"
                           value={pickuplocation}
                           onChange={(e)=>HandlePickupLocation(e)}
+                          onInput={(e)=>HandlePickupCoord(e)}
                         />
                       </div>
 
@@ -269,6 +289,7 @@ const UserPart = (props) => {
                           placeholder="City, Airport, Station,etc"
                           value={dropofflocation}
                           onChange={(e)=>handleDropoffLocation(e)}
+                          onInput={(e)=>HandleDropoffCoord(e)}
                         />
                       </div>
                     {/* </Autocomplete> */}
@@ -343,7 +364,7 @@ const UserPart = (props) => {
                         <option value={12}>SELECT TRUCK LATER</option>
                       </select>
                     </div>
-                    <div className="form-group ">
+                    <div className="form-group" style={{marginBottom:"2em",padding:"2em"}}>
                       {/* <button
                       type="submit"
                         id="buttonSubmit1"
@@ -357,6 +378,7 @@ const UserPart = (props) => {
 
                        <button 
                        type="submit" 
+                       style={{width:"4em",height:"2em",margin:"0.5em",marginBottom:"2em",padding:"auto"}}
                        onClick={(e)=>{handleSubmitMain(e);}}
                        className="btn btn-success btn-lg btn-block" 
                        id="buttonSubmit1" >Submit</button>
@@ -371,7 +393,7 @@ const UserPart = (props) => {
         </div>
         <div className="MapsContainer">
           <div className="col-sm-9 col-md-2 col-lg-8" class>
-            <Maps pickuplocation={pickuplocation} dropofflocation={dropofflocation}/>  
+            <Maps pickupcoord={pickupcoord} dropoffcoord={dropoffcoord}/>  
             <div></div>
           </div>
         </div> 
