@@ -15,6 +15,7 @@ const UserPart = (props) => {
 
 
   const [fullname, setFullname] = useState("");
+  const [id,setId] = useState("");
   const [email, setEmail] = useState("");
   const [phonenumber, setPhonenumber] = useState("");
   const [pickuplocation, setPickuplocation] = useState("");
@@ -27,7 +28,11 @@ const UserPart = (props) => {
   const [error, setError] = useState("");
   const [pickupcoord,setpickupcoord]=useState([72.8777, 19.0760]);
   const [dropoffcoord,setdropoffcoord]=useState([]);
+  const [distance,setDistance]=useState();
 
+  const retirveDistance=(dist)=>{
+    setDistance(dist);
+  }
 
 
   // Handling the name change
@@ -129,10 +134,9 @@ const UserPart = (props) => {
           }
           )
           .then((res) => {
-
               console.log(res)
-              setReceiptIsOpen(true)
-         
+              setReceiptIsOpen(true);
+              setId(res.data);
           })
           .catch((err)=>{
             console.log("error found" ,err);
@@ -393,11 +397,11 @@ const UserPart = (props) => {
         </div>
         <div className="MapsContainer">
           <div className="col-sm-9 col-md-2 col-lg-8" class>
-            <Maps pickupcoord={pickupcoord} dropoffcoord={dropoffcoord}/>  
+            <Maps pickupcoord={pickupcoord} dropoffcoord={dropoffcoord} retirveDistance={retirveDistance}/>  
             <div></div>
           </div>
         </div> 
-        {receiptIsOpen && <Receipt onClick={ReceiptPage} />}
+        {receiptIsOpen && <Receipt onClick={ReceiptPage} id={id} pickupcoord={pickupcoord} dropoffcoord={dropoffcoord} distance={distance}/>}
       </div>
     </div>
   );

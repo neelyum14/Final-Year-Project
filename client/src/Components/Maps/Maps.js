@@ -8,6 +8,9 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 
 
 const Maps=(props)=> {
+  let pickupcoord=props.pickupcoord;
+  let dropoffcoord=props.dropoffcoord;
+  const retirveDistance=props.retirveDistance;
   const [distance,setDistance]=useState(0)
     mapboxgl.accessToken = 'pk.eyJ1IjoibWl0YWxlZWtvbmRlIiwiYSI6ImNsMm45Ym42dzBvZ2ozYmt6MDd4ZTA5NmUifQ.J4YXTtkSlSwZfOwX0ztdyw';
     console.log(props.pickupcoord+" "+props.dropoffcoord);
@@ -18,7 +21,6 @@ const Maps=(props)=> {
 
 
 useEffect(()=>{
- 
     let map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
@@ -37,7 +39,8 @@ useEffect(()=>{
       .then((jsonData)=>{
         const data = jsonData.routes[0];
         console.log("Distance "+(data["distance"]/1000)+"km");
-        setDistance(data["distance"]/1000)
+        setDistance(data["distance"]/1000);
+        retirveDistance(data["distance"]/1000);
       const route = data.geometry.coordinates;
       const geojson = {
         type: 'Feature',
@@ -84,7 +87,7 @@ useEffect(()=>{
         center: props.pickupcoord,
         zoom: 13
     });
-      getRoute(props.pickupcoord,props.dropoffcoord,map);
+    if(pickupcoord!=[] || dropoffcoord!=[])getRoute(props.pickupcoord,props.dropoffcoord,map);
     
       // Add starting point to the map
       map.addLayer({

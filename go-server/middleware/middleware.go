@@ -331,7 +331,7 @@ func MainPage(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		} else {
 			fmt.Println("Inserted the record", insertResult.InsertedID)
-			json.NewEncoder(w).Encode(m)
+			json.NewEncoder(w).Encode(insertResult.InsertedID)
 		}
 
 	}
